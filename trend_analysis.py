@@ -1,28 +1,23 @@
-import mysql.connector
+from datetime import datetime
 
+# In-memory storage
+exchange_rates = [
+    {"base_currency": "USD", "target_currency": "EUR", "exchange_rate": 0.92, "timestamp": datetime.now()},
+    {"base_currency": "USD", "target_currency": "JPY", "exchange_rate": 150, "timestamp": datetime.now()},
+    {"base_currency": "EUR", "target_currency": "GBP", "exchange_rate": 0.88, "timestamp": datetime.now()},
+]
+
+trend_analysis = []
 
 def update_trend_analysis():
-    db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root123",
-        database="currency_trend_management",
-    )
-    cursor = db.cursor()
-
-    cursor.execute(
-        """
-        INSERT INTO trend_analysis (base_currency, target_currency, exchange_rate, timestamp)
-        SELECT base_currency, target_currency, exchange_rate, timestamp FROM exchange_rates
-    """
-    )
-
-    db.commit()
-    print("✅ Trend analysis table updated.")
-
-    cursor.close()
-    db.close()
-
+    """Copy exchange_rates into trend_analysis in-memory"""
+    for rate in exchange_rates:
+        trend_analysis.append(rate.copy())
+    
+    print(f"✅ Trend analysis table updated with {len(trend_analysis)} records.")
 
 if __name__ == "__main__":
     update_trend_analysis()
+    # Optional: print trend_analysis
+    for t in trend_analysis:
+        print(t)
