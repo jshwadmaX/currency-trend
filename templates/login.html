@@ -12,31 +12,111 @@
             --secondary-color: #4f46e5;
             --accent-color: #818cf8;
             --text-color: #1e293b;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
+            --bg-gradient-1: #667eea;
+            --bg-gradient-2: #764ba2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            background-color: var(--bg-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            position: relative;
+        }
+        
+        /* Animated Currency Background */
+        .currency-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0.15;
+        }
+        
+        .currency-symbol {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            animation: float 15s infinite ease-in-out;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Glowing orbs in background */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+            animation: drift 20s infinite ease-in-out;
+        }
+        
+        @keyframes drift {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(100px, 100px);
+            }
+            50% {
+                transform: translate(-50px, 200px);
+            }
+            75% {
+                transform: translate(150px, 50px);
+            }
         }
         
         .login-container {
+            position: relative;
+            z-index: 10;
             width: 100%;
             max-width: 450px;
             padding: 2rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
         
         .login-card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             padding: 2.5rem;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .login-card:hover {
+            transform: translateY(-5px);
         }
         
         .logo {
@@ -50,54 +130,160 @@
         }
         
         .logo-icon {
-            background-color: var(--primary-color);
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 12px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
         }
         
         .logo-icon i {
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            animation: spin 3s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .form-control {
-            padding: 0.75rem;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            padding: 0.85rem;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
             margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
         }
         
         .btn-primary {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            border-radius: 8px;
-            padding: 0.75rem;
-            font-weight: 500;
+            border-radius: 12px;
+            padding: 0.85rem;
+            font-weight: 600;
             width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
         }
         
         .btn-primary:hover {
-            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
         
         .form-label {
             color: var(--text-color);
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 0.5rem;
+            font-size: 0.9rem;
         }
         
         .alert {
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 1.5rem;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #64748b;
+        }
+        
+        .signup-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .signup-link a:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* Coin rain on successful interaction */
+        .coin {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: coinFall 2s ease-in-out;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        @keyframes coinFall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Animated Currency Background -->
+    <div class="currency-bg" id="currencyBg"></div>
+    
+    <!-- Glowing orbs -->
+    <div class="orb" style="width: 300px; height: 300px; top: 10%; left: 10%;"></div>
+    <div class="orb" style="width: 200px; height: 200px; top: 60%; right: 15%;"></div>
+    <div class="orb" style="width: 250px; height: 250px; bottom: 10%; left: 50%;"></div>
+    
     <div class="login-container">
         <div class="login-card">
             <div class="logo">
@@ -119,7 +305,7 @@
                 {% endif %}
             {% endwith %}
             
-            <form action="{{ url_for('login') }}" method="post">
+            <form action="{{ url_for('login') }}" method="post" id="loginForm">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" name="username" id="username" placeholder="Enter your username" required>
@@ -131,9 +317,74 @@
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Sign In</button>
                 </div>
-                <p class="text-center mt-3">Don't have an account? <a href="{{ url_for('signup') }}" class="text-decoration-none" style="color: var(--primary-color);">Sign up here</a></p>
+                <p class="signup-link">Don't have an account? <a href="{{ url_for('signup') }}">Sign up here</a></p>
             </form>
         </div>
     </div>
+
+    <script>
+        // Create floating currency symbols
+        const currencies = ['$', '€', '£', '¥', '₹', '₿', '₽', '₩'];
+        const currencyBg = document.getElementById('currencyBg');
+        
+        function createCurrencySymbol() {
+            const symbol = document.createElement('div');
+            symbol.className = 'currency-symbol';
+            symbol.textContent = currencies[Math.floor(Math.random() * currencies.length)];
+            symbol.style.left = Math.random() * 100 + '%';
+            symbol.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+            symbol.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            symbol.style.animationDelay = Math.random() * 5 + 's';
+            currencyBg.appendChild(symbol);
+            
+            setTimeout(() => {
+                symbol.remove();
+            }, 20000);
+        }
+        
+        // Create initial symbols
+        for (let i = 0; i < 20; i++) {
+            setTimeout(createCurrencySymbol, i * 1000);
+        }
+        
+        // Continue creating symbols
+        setInterval(createCurrencySymbol, 2000);
+        
+        // Add coin rain effect on form interaction
+        function createCoin(x, y) {
+            const coin = document.createElement('div');
+            coin.className = 'coin';
+            coin.textContent = '💰';
+            coin.style.left = x + 'px';
+            coin.style.top = y + 'px';
+            document.body.appendChild(coin);
+            
+            setTimeout(() => {
+                coin.remove();
+            }, 2000);
+        }
+        
+        // Trigger coins on input focus
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function(e) {
+                const rect = e.target.getBoundingClientRect();
+                createCoin(rect.left + rect.width / 2, rect.top);
+            });
+        });
+        
+        // Button hover effect
+        const submitBtn = document.querySelector('.btn-primary');
+        submitBtn.addEventListener('mouseenter', function(e) {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const rect = e.target.getBoundingClientRect();
+                    createCoin(
+                        rect.left + Math.random() * rect.width,
+                        rect.top
+                    );
+                }, i * 100);
+            }
+        });
+    </script>
 </body>
 </html>
