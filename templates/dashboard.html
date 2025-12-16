@@ -16,38 +16,494 @@
         --bg-color: #f8fafc;
         --card-bg: #ffffff;
     }
-    body { background-color: var(--bg-color); font-family: 'Segoe UI', sans-serif; color: var(--text-color); margin:0; padding:0; }
-    .sidebar { background-color: var(--sidebar-bg); height: 100vh; position: fixed; width: 250px; border-right:1px solid #e2e8f0; padding:1.5rem; }
-    .logo { display:flex; align-items:center; margin-bottom:2rem; color: var(--primary-color); font-weight:bold; font-size:1.5rem; }
-    .logo-icon { background-color: var(--primary-color); width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-right:10px; }
-    .logo-icon i { color:white; font-size:1.2rem; }
-    .nav-link { display:flex; align-items:center; padding:0.75rem 1rem; color: var(--text-color); border-radius:8px; margin-bottom:0.5rem; text-decoration:none; transition:all 0.3s; }
-    .nav-link:hover { background-color: rgba(99,102,241,0.08); color: var(--primary-color); }
-    .nav-link.active { background-color: rgba(99,102,241,0.1); color: var(--primary-color); font-weight:500; }
-    .nav-link i { margin-right:10px; width:20px; text-align:center; }
-    .content { margin-left:250px; padding:1.5rem; }
-    .content-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
-    .search-bar { position:relative; max-width:400px; }
-    .search-bar input { padding:0.5rem 1rem 0.5rem 2.5rem; border-radius:8px; border:1px solid #e2e8f0; width:100%; }
-    .search-bar i { position:absolute; left:12px; top:50%; transform: translateY(-50%); color:#94a3b8; }
-    .user-profile { display:flex; align-items:center; position:relative; cursor:pointer; }
-    .user-profile img { width:40px; height:40px; border-radius:50%; }
-    .profile-dropdown { display:none; position:absolute; top:50px; right:0; background:white; border:1px solid #e2e8f0; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); width:150px; }
-    .profile-dropdown a { display:block; padding:0.75rem 1rem; color:#1e293b; text-decoration:none; }
-    .profile-dropdown a:hover { background-color: rgba(99,102,241,0.08); color: var(--primary-color); }
-    .user-profile:hover .profile-dropdown { display:block; }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: 'Segoe UI', sans-serif; 
+        color: var(--text-color); 
+        position: relative;
+        min-height: 100vh;
+    }
+    
+    /* Floating money particles */
+    .money-particle {
+        position: fixed;
+        font-size: 1.5rem;
+        opacity: 0.3;
+        pointer-events: none;
+        z-index: 1;
+        animation: floatParticle 20s infinite linear;
+    }
+    
+    @keyframes floatParticle {
+        0% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% { opacity: 0.3; }
+        90% { opacity: 0.3; }
+        100% {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    .sidebar { 
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        height: 100vh; 
+        position: fixed; 
+        width: 260px; 
+        border-right: 1px solid rgba(226, 232, 240, 0.5);
+        padding: 1.5rem; 
+        z-index: 100;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .logo { 
+        display: flex; 
+        align-items: center; 
+        margin-bottom: 2rem; 
+        color: var(--primary-color); 
+        font-weight: bold; 
+        font-size: 1.5rem; 
+    }
+    
+    .logo-icon { 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 45px; 
+        height: 45px; 
+        border-radius: 12px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        margin-right: 10px;
+        animation: logoSpin 4s linear infinite;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    @keyframes logoSpin {
+        0%, 90% { transform: rotate(0deg); }
+        95% { transform: rotate(180deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .logo-icon i { color: white; font-size: 1.2rem; }
+    
+    .nav-link { 
+        display: flex; 
+        align-items: center; 
+        padding: 0.85rem 1rem; 
+        color: var(--text-color); 
+        border-radius: 12px; 
+        margin-bottom: 0.5rem; 
+        text-decoration: none; 
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .nav-link::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, rgba(99,102,241,0.1), rgba(99,102,241,0.05));
+        transition: width 0.3s;
+    }
+    
+    .nav-link:hover::before {
+        width: 100%;
+    }
+    
+    .nav-link:hover { 
+        background-color: rgba(99,102,241,0.08); 
+        color: var(--primary-color);
+        transform: translateX(5px);
+    }
+    
+    .nav-link.active { 
+        background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(118,75,162,0.15));
+        color: var(--primary-color); 
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(99,102,241,0.2);
+    }
+    
+    .nav-link i { 
+        margin-right: 12px; 
+        width: 20px; 
+        text-align: center;
+        transition: transform 0.3s;
+    }
+    
+    .nav-link:hover i {
+        transform: scale(1.2) rotate(5deg);
+    }
+    
+    .content { 
+        margin-left: 260px; 
+        padding: 1.5rem;
+        position: relative;
+        z-index: 10;
+    }
+    
+    .content-header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 1.5rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1rem 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .search-bar { 
+        position: relative; 
+        max-width: 400px;
+        flex: 1;
+    }
+    
+    .search-bar input { 
+        padding: 0.75rem 1rem 0.75rem 3rem; 
+        border-radius: 12px; 
+        border: 2px solid rgba(226, 232, 240, 0.5);
+        width: 100%;
+        transition: all 0.3s;
+        background: white;
+    }
+    
+    .search-bar input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        outline: none;
+        transform: translateY(-2px);
+    }
+    
+    .search-bar i { 
+        position: absolute; 
+        left: 14px; 
+        top: 50%; 
+        transform: translateY(-50%); 
+        color: #94a3b8;
+        transition: color 0.3s;
+    }
+    
+    .search-bar input:focus + i {
+        color: var(--primary-color);
+    }
+    
+    .user-profile { 
+        display: flex; 
+        align-items: center; 
+        position: relative; 
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 12px;
+        transition: all 0.3s;
+    }
+    
+    .user-profile:hover {
+        background: rgba(99,102,241,0.08);
+    }
+    
+    .user-profile img { 
+        width: 45px; 
+        height: 45px; 
+        border-radius: 50%;
+        border: 3px solid var(--primary-color);
+        transition: transform 0.3s;
+    }
+    
+    .user-profile:hover img {
+        transform: scale(1.1) rotate(5deg);
+    }
+    
+    .profile-dropdown { 
+        display: none; 
+        position: absolute; 
+        top: 60px; 
+        right: 0; 
+        background: white; 
+        border: 1px solid #e2e8f0; 
+        border-radius: 12px; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+        width: 180px;
+        overflow: hidden;
+        animation: slideDown 0.3s ease;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .profile-dropdown a { 
+        display: block; 
+        padding: 0.85rem 1.2rem; 
+        color: #1e293b; 
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    
+    .profile-dropdown a:hover { 
+        background: linear-gradient(90deg, rgba(99,102,241,0.08), transparent);
+        color: var(--primary-color);
+        padding-left: 1.5rem;
+    }
+    
+    .user-profile:hover .profile-dropdown { display: block; }
 
-    .stat-card { background-color: var(--card-bg); border-radius:16px; box-shadow:0 2px 10px rgba(0,0,0,0.03); padding:1.5rem; height:100%; border:none; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; }
-    .stat-card:hover { transform: translateY(-3px); box-shadow:0 4px 12px rgba(0,0,0,0.08); }
-    .stat-card h5 { color:#64748b; font-weight:500; font-size:0.875rem; margin-bottom:0.75rem; }
-    .stat-card .stat-value { font-size:1.75rem; font-weight:600; margin-bottom:0.5rem; }
-    .stat-card .stat-change { font-size:0.875rem; color:#10b981; }
-    .trend-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; background-color: rgba(99,102,241,0.1); color: var(--primary-color); }
-    .chart-container { background-color: var(--card-bg); border-radius:16px; box-shadow:0 2px 10px rgba(0,0,0,0.03); padding:1.5rem; margin-top:1.5rem; }
-    .chart-container h4 { margin-bottom:1rem; font-weight:600; }
+    .stat-card { 
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px; 
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        padding: 1.75rem; 
+        height: 100%; 
+        border: none; 
+        cursor: pointer; 
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(118,75,162,0.05));
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .stat-card:hover::before {
+        opacity: 1;
+    }
+    
+    .stat-card:hover { 
+        transform: translateY(-8px) scale(1.02); 
+        box-shadow: 0 12px 40px rgba(99,102,241,0.25);
+    }
+    
+    .stat-card h5 { 
+        color: #64748b; 
+        font-weight: 500; 
+        font-size: 0.875rem; 
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .stat-card .stat-value { 
+        font-size: 2rem; 
+        font-weight: 700; 
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .stat-card .stat-change { 
+        font-size: 0.875rem; 
+        color: #10b981;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .trend-icon { 
+        width: 55px; 
+        height: 55px; 
+        border-radius: 14px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(118,75,162,0.15));
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        transition: all 0.3s;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .stat-card:hover .trend-icon {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+    }
+    
+    .chart-container { 
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px; 
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        padding: 2rem; 
+        margin-top: 1.5rem;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .chart-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(99,102,241,0.03) 0%, transparent 70%);
+        animation: pulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    
+    .chart-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(99,102,241,0.2);
+    }
+    
+    .chart-container h4 { 
+        margin-bottom: 1.5rem; 
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .welcome-card {
+        background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(118,75,162,0.95));
+        backdrop-filter: blur(10px);
+        color: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 8px 30px rgba(99,102,241,0.4);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s;
+    }
+    
+    .welcome-card::before {
+        content: '💰';
+        position: absolute;
+        font-size: 15rem;
+        right: -3rem;
+        top: -3rem;
+        opacity: 0.1;
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(10deg); }
+    }
+    
+    .welcome-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(99,102,241,0.5);
+    }
+    
+    .welcome-card h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .welcome-card p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Currency ticker */
+    .currency-ticker {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+    
+    .ticker-content {
+        display: flex;
+        animation: scroll 30s linear infinite;
+        gap: 2rem;
+    }
+    
+    @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    
+    .ticker-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        font-weight: 600;
+    }
+    
+    .ticker-item .currency {
+        color: var(--primary-color);
+    }
+    
+    .ticker-item .value {
+        color: #10b981;
+    }
+    
+    /* Sparkle effect */
+    .sparkle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+        animation: sparkle 1s ease-in-out infinite;
+        pointer-events: none;
+    }
+    
+    @keyframes sparkle {
+        0%, 100% {
+            opacity: 0;
+            transform: scale(0);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
 </style>
 </head>
 <body>
+    <!-- Money particles background -->
+    <div id="moneyParticles"></div>
+
     <div class="sidebar">
         <div class="logo">
             <div class="logo-icon"><i class="fas fa-dollar-sign"></i></div>
@@ -65,53 +521,81 @@
     <div class="content">
         <div class="content-header">
             <div class="search-bar">
+                <input type="text" placeholder="Search currencies, rates..." id="searchInput">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search...">
             </div>
             <div class="user-profile">
-                <img src="https://ui-avatars.com/api/?background=random" alt="Profile">
+                <img src="https://ui-avatars.com/api/?background=667eea&color=fff&name=User" alt="Profile">
                 <div class="profile-dropdown">
-                    <a href="/profile">Profile</a>
-                    <a href="/logout">Logout</a>
+                    <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+                    <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
+            </div>
+        </div>
+
+        <!-- Currency Ticker -->
+        <div class="currency-ticker">
+            <div class="ticker-content" id="tickerContent">
+                <div class="ticker-item"><span class="currency">USD/EUR</span> <span class="value">↑ 0.92</span></div>
+                <div class="ticker-item"><span class="currency">USD/GBP</span> <span class="value">↑ 0.79</span></div>
+                <div class="ticker-item"><span class="currency">USD/JPY</span> <span class="value">↓ 149.50</span></div>
+                <div class="ticker-item"><span class="currency">USD/CAD</span> <span class="value">↑ 1.35</span></div>
+                <div class="ticker-item"><span class="currency">USD/AUD</span> <span class="value">↓ 1.52</span></div>
+                <div class="ticker-item"><span class="currency">USD/CHF</span> <span class="value">↑ 0.88</span></div>
+                <!-- Duplicate for seamless loop -->
+                <div class="ticker-item"><span class="currency">USD/EUR</span> <span class="value">↑ 0.92</span></div>
+                <div class="ticker-item"><span class="currency">USD/GBP</span> <span class="value">↑ 0.79</span></div>
+                <div class="ticker-item"><span class="currency">USD/JPY</span> <span class="value">↓ 149.50</span></div>
+                <div class="ticker-item"><span class="currency">USD/CAD</span> <span class="value">↑ 1.35</span></div>
+                <div class="ticker-item"><span class="currency">USD/AUD</span> <span class="value">↓ 1.52</span></div>
+                <div class="ticker-item"><span class="currency">USD/CHF</span> <span class="value">↑ 0.88</span></div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12 mb-4">
-                <div class="stat-card">
-                    <h3>Welcome to Cashanova</h3>
-                    <p class="mt-3">Monitor currency exchange rates, perform conversions, and track financial trends globally.</p>
+                <div class="welcome-card">
+                    <h3>Welcome to Cashanova 🚀</h3>
+                    <p class="mt-3">Monitor currency exchange rates, perform conversions, and track financial trends globally in real-time.</p>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-4 mb-4">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3"><div class="trend-icon"><i class="fas fa-coins"></i></div></div>
+                <div class="stat-card" onclick="animateCard(this)">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="trend-icon"><i class="fas fa-coins"></i></div>
+                    </div>
                     <h5>Total Currencies</h5>
-                    <div class="stat-value" id="totalCurrencies">10</div>
+                    <div class="stat-value" id="totalCurrencies">0</div>
+                    <div class="stat-change"><i class="fas fa-arrow-up"></i> Active</div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3"><div class="trend-icon"><i class="fas fa-exchange-alt"></i></div></div>
+                <div class="stat-card" onclick="animateCard(this)">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="trend-icon"><i class="fas fa-exchange-alt"></i></div>
+                    </div>
                     <h5>Conversions This Month</h5>
-                    <div class="stat-value" id="conversions">12</div>
+                    <div class="stat-value" id="conversions">0</div>
+                    <div class="stat-change"><i class="fas fa-arrow-up"></i> +15% from last month</div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3"><div class="trend-icon"><i class="fas fa-chart-line"></i></div></div>
+                <div class="stat-card" onclick="animateCard(this)">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="trend-icon"><i class="fas fa-chart-line"></i></div>
+                    </div>
                     <h5>Monthly Trend</h5>
-                    <div class="stat-value" id="monthlyTrend">+5%</div>
+                    <div class="stat-value" id="monthlyTrend">+0%</div>
+                    <div class="stat-change"><i class="fas fa-arrow-up"></i> Positive momentum</div>
                 </div>
             </div>
         </div>
 
         <div class="chart-container">
-            <h4>Currency Trend Analysis</h4>
+            <h4>📊 Currency Trend Analysis</h4>
             <canvas id="exchangeRateChart" height="200"></canvas>
         </div>
     </div>
@@ -119,17 +603,184 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 <script>
+    // Create floating money particles
+    const particles = ['💵', '💴', '💶', '💷', '💰', '🪙', '💸'];
+    const container = document.getElementById('moneyParticles');
+    
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'money-particle';
+        particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.fontSize = (Math.random() * 1 + 1) + 'rem';
+        particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+        particle.style.animationDelay = Math.random() * 5 + 's';
+        container.appendChild(particle);
+        
+        setTimeout(() => particle.remove(), 25000);
+    }
+    
+    // Create initial particles
+    for (let i = 0; i < 15; i++) {
+        setTimeout(createParticle, i * 800);
+    }
+    
+    // Continue creating particles
+    setInterval(createParticle, 3000);
+    
+    // Animate stat cards
+    function animateCard(card) {
+        // Create sparkles
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                card.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1000);
+            }, i * 100);
+        }
+    }
+    
+    // Animate counters
+    function animateCounter(id, target) {
+        const element = document.getElementById(id);
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current);
+            }
+        }, 30);
+    }
+    
+    // Start animations after page load
+    setTimeout(() => {
+        animateCounter('totalCurrencies', 180);
+        animateCounter('conversions', 1247);
+    }, 500);
+    
+    // Animate monthly trend
+    setTimeout(() => {
+        const trendElement = document.getElementById('monthlyTrend');
+        let percent = 0;
+        const timer = setInterval(() => {
+            percent += 0.1;
+            if (percent >= 5.3) {
+                trendElement.textContent = '+5.3%';
+                clearInterval(timer);
+            } else {
+                trendElement.textContent = '+' + percent.toFixed(1) + '%';
+            }
+        }, 30);
+    }, 500);
+    
+    // Enhanced chart with gradient
     const ctx = document.getElementById('exchangeRateChart').getContext('2d');
+    
+    const gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient1.addColorStop(0, 'rgba(102, 126, 234, 0.4)');
+    gradient1.addColorStop(1, 'rgba(102, 126, 234, 0.05)');
+    
+    const gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient2.addColorStop(0, 'rgba(118, 75, 162, 0.4)');
+    gradient2.addColorStop(1, 'rgba(118, 75, 162, 0.05)');
+    
     const chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['2025-12-10','2025-12-11','2025-12-12','2025-12-13','2025-12-14'],
+            labels: ['Dec 10', 'Dec 11', 'Dec 12', 'Dec 13', 'Dec 14', 'Dec 15', 'Dec 16'],
             datasets: [
-                { label: 'EUR', data: [0.92,0.93,0.94,0.95,0.92], borderColor:'#6366f1', backgroundColor:'rgba(99,102,241,0.2)', tension:0.4 },
-                { label: 'JPY', data: [149,150,148,149.5,150], borderColor:'#4f46e5', backgroundColor:'rgba(79,70,229,0.2)', tension:0.4 }
+                { 
+                    label: 'EUR/USD', 
+                    data: [0.92, 0.93, 0.94, 0.95, 0.92, 0.94, 0.95], 
+                    borderColor: '#667eea', 
+                    backgroundColor: gradient1,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    pointBackgroundColor: '#667eea',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                },
+                { 
+                    label: 'GBP/USD', 
+                    data: [0.78, 0.79, 0.77, 0.79, 0.80, 0.79, 0.81], 
+                    borderColor: '#764ba2', 
+                    backgroundColor: gradient2,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    pointBackgroundColor: '#764ba2',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }
             ]
         },
-        options: { responsive:true, plugins:{legend:{position:'top'}, title:{display:true,text:'Exchange Rate Trends (USD Base)'}}}
+        options: { 
+            responsive: true, 
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: {
+                            size: 13,
+                            weight: '600'
+                        }
+                    }
+                }, 
+                title: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    cornerRadius: 8,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        }
+    });
+    
+    // Search bar interaction
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'scale(1.02)';
+    });
+    searchInput.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'scale(1)';
     });
 </script>
 </body>
