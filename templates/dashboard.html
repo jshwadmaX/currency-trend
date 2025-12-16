@@ -509,13 +509,27 @@
             <div class="logo-icon"><i class="fas fa-dollar-sign"></i></div>
             CASHANOVA
         </div>
-        <nav>
-            <a href="/dashboard" class="nav-link active"><i class="fas fa-chart-line"></i> Dashboard</a>
-            <a href="/exchange_rates" class="nav-link"><i class="fas fa-exchange-alt"></i> Exchange Rates</a>
-            <a href="/currency_converter" class="nav-link"><i class="fas fa-calculator"></i> Currency Converter</a>
-            <a href="/profile" class="nav-link"><i class="fas fa-user"></i> Profile</a>
-            <a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        </nav>
+         <nav>
+        <a href="{{ url_for('dashboard') }}" class="nav-link active">
+            <i class="fas fa-chart-line"></i> Dashboard
+        </a>
+
+        <a href="{{ url_for('exchange_rates') }}" class="nav-link">
+            <i class="fas fa-exchange-alt"></i> Exchange Rates
+        </a>
+
+        <a href="{{ url_for('currency_converter') }}" class="nav-link">
+            <i class="fas fa-calculator"></i> Currency Converter
+        </a>
+
+        <a href="{{ url_for('profile') }}" class="nav-link">
+            <i class="fas fa-user"></i> Profile
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </nav>
     </div>
 
     <div class="content">
@@ -526,10 +540,11 @@
             </div>
             <div class="user-profile">
                 <img src="https://ui-avatars.com/api/?background=667eea&color=fff&name=User" alt="Profile">
-                <div class="profile-dropdown">
-                    <a href="/profile"><i class="fas fa-user"></i> Profile</a>
-                    <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
+               <div class="profile-dropdown">
+    <a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a>
+    <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
             </div>
         </div>
 
@@ -785,3 +800,4 @@
 </script>
 </body>
 </html>
+
