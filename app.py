@@ -98,6 +98,24 @@ def dashboard():
     }
     return render_template("dashboard.html", account=account, stats=stats)
 
+@app.route("/exchange_rates")
+@login_required
+def exchange_rates():
+    account = users.get(session["username"])
+    # Sample exchange rates
+    rates = [
+        {"base_currency": "USD", "target_currency": "EUR", "exchange_rate": 0.9, "timestamp": datetime.now()},
+        {"base_currency": "USD", "target_currency": "JPY", "exchange_rate": 150, "timestamp": datetime.now()},
+        {"base_currency": "USD", "target_currency": "GBP", "exchange_rate": 0.8, "timestamp": datetime.now()},
+    ]
+    return render_template("exchange_rates.html", account=account, rates=rates)
+
+@app.route("/currency_converter")
+@login_required
+def currency_converter():
+    account = users.get(session["username"])
+    return render_template("currency_converter.html", account=account, currencies=currencies)
+
 @app.route("/get_currencies")
 @login_required
 def get_currencies():
