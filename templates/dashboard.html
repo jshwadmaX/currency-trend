@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cashanova - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #4f46e5;
+            --accent-color: #818cf8;
+            --text-color: #1e293b;
+            --sidebar-bg: #ffffff;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            border-right: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .logo-icon {
+            background-color: var(--primary-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .logo-icon i {
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: var(--text-color);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(99, 102, 241, 0.08);
+            color: var(--primary-color);
+        }
+        
+        .nav-link.active {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            margin-left: 250px;
+            padding: 1.5rem;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-bar {
+            position: relative;
+            max-width: 400px;
+        }
+        
+        .search-bar input {
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            width: 100%;
+        }
+        
+        .search-bar i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 1rem;
+        }
+        
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            padding: 1.5rem;
+            height: 100%;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .stat-card h5 {
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .stat-change {
+            font-size: 0.875rem;
+            color: #10b981;
+        }
+        
+        .trend-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .chart-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .chart-container h4 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .alert {
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .currency-table {
+            width: 100%;
+        }
+        
+        .currency-table th {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            font-weight: 500;
+            text-align: left;
+            padding: 0.75rem 1rem;
+        }
+        
+        .currency-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .modal-content {
+            border-radius: 16px;
+            border: none;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid #e2e8f0;
+            background-color: rgba(99, 102, 241, 0.05);
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .modal-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #e2e8f0;
+            border-radius: 0 0 16px 16px;
+        }
+        
+        /* Table for trending currencies */
+        .trending-currencies-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .trending-currencies-table th,
+        .trending-currencies-table td {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .trending-currencies-table th {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .trending-currencies-table tr:nth-child(even) {
+            background-color: rgba(240, 240, 250, 0.5);
+        }
+        
+        .trending-currencies-table .increasing {
+            color: #10b981;
+        }
+        
+        .trending-currencies-table .decreasing {
+            color: #ef4444;
+        }
+        
+        /* Calendar styles */
+        .calendar-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .fc-header-toolbar {
+            margin-bottom: 1.5em !important;
+        }
+        
+        .fc-button-primary {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+        
+        .fc-button-primary:hover {
+            background-color: var(--secondary-color) !important;
+            border-color: var(--secondary-color) !important;
+        }
+        
+        .fc-col-header-cell-cushion {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .fc-daygrid-day-number {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .fc-event {
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 4px;
+            padding: 2px;
+        }
+        
+        .fc-day-today {
+            background-color: rgba(99, 102, 241, 0.1) !important;
+        }
+        
+        /* Fix for chart container spacing */
+        #exchangeRateChart {
+            margin-bottom: 15px;
+        }
+        
+        /* Reduce space between chart and currency tables */
+        .row.mt-4 {
+            margin-top: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            CASHANOVA
+        </div>
+        
+        <nav>
+            <a href="{{ url_for('dashboard') }}" class="nav-link active">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="{{ url_for('exchange_rates') }}" class="nav-link">
+                <i class="fas fa-exchange-alt"></i> Exchange Rates
+            </a>
+            <a href="{{ url_for('currency_converter') }}" class="nav-link">
+                <i class="fas fa-calculator"></i> Currency Converter
+            </a>
+            <a href="{{ url_for('profile') }}" class="nav-link">
+                <i class="fas fa-user"></i> Profile
+            </a>
+            <a href="{{ url_for('logout') }}" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </nav>
+    </div>
+    
+    <div class="content">
+        <div class="content-header">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+            
+            <div class="user-profile">
+                <span>{{ account['username'] }}</span>
+                <img src="https://ui-avatars.com/api/?name={{ account['username'] }}&background=random" alt="Profile">
+            </div>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <div class="stat-card">
+                    <h3>Welcome to Cashanova - Currency Trend Management System</h3>
+                    <p class="mt-3">
+                        Cashanova is a comprehensive platform designed to help you monitor currency exchange rates, 
+                        perform currency conversions, and track financial trends across global markets. With our 
+                        intuitive dashboard, you can make informed decisions about your international transactions
+                        and investments.
+                    </p>
+                    <p>
+                        Use the sidebar navigation to explore different features of the platform. The Exchange 
+                        Rates section displays up-to-date currency rates, while the Currency Converter allows you
+                        to quickly calculate conversions between different currencies.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="stat-card" id="totalCurrenciesCard">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="trend-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                    </div>
+                    <h5>Total Currencies</h5>
+                    <div class="stat-value">{{ stats.total_currencies }}</div>
+                    <div class="stat-change">
+                        <i class="fas fa-info-circle"></i> Click to view
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="stat-card" id="conversionsCard">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="trend-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                    </div>
+                    <h5>Conversions This Month</h5>
+                    <div class="stat-value">{{ 12 }}</div>
+                    <div class="stat-change">
+                        <i class="fas fa-info-circle"></i> Click for details
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="trend-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <h5>Monthly Trend</h5>
+                    <div class="stat-value">{{ stats.monthly_trend }}</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i> On track
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Currency Trend Analysis Chart -->
+        <div class="chart-container" id="trendAnalysisSection">
+            <h4>Currency Trend Analysis</h4>
+           
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-arrow-up text-success"></i> Increasing Currencies</h5>
+                    <div class="table-responsive">
+                        <table class="trending-currencies-table">
+                            <thead>
+                                <tr>
+                                    <th>Base Currency</th>
+                                    <th>Target Currency</th>
+                                    <th>Old Rate</th>
+                                    <th>New Rate</th>
+                                    <th>Change</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for currency in increased_rates %}
+                                <tr>
+                                    <td>{{ currency.base_currency }}</td>
+                                    <td>{{ currency.target_currency }}</td>
+                                    <td>{{ currency.old_rate }}</td>
+                                    <td>{{ currency.new_rate }}</td>
+                                    <td class="increasing">+{{ ((currency.new_rate - currency.old_rate) / currency.old_rate * 100)|round(2) }}%</td>
+                                    <td>{{ currency.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5><i class="fas fa-arrow-down text-danger"></i> Decreasing Currencies</h5>
+                    <div class="table-responsive">
+                        <table class="trending-currencies-table">
+                            <thead>
+                                <tr>
+                                    <th>Base Currency</th>
+                                    <th>Target Currency</th>
+                                    <th>Old Rate</th>
+                                    <th>New Rate</th>
+                                    <th>Change</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for currency in decreased_rates %}
+                                <tr>
+                                    <td>{{ currency.base_currency }}</td>
+                                    <td>{{ currency.target_currency }}</td>
+                                    <td>{{ currency.old_rate }}</td>
+                                    <td>{{ currency.new_rate }}</td>
+                                    <td class="decreasing">{{ ((currency.new_rate - currency.old_rate) / currency.old_rate * 100)|round(2) }}%</td>
+                                    <td>{{ currency.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <!-- Currency Modal -->
+    <div class="modal fade" id="currencyModal" tabindex="-1" aria-labelledby="currencyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="currencyModalLabel">Available Currencies</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="currency-table" id="currencyTable">
+                            <thead>
+                                <tr>
+                                    <th>Currency Code</th>
+                                    <th>Currency Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="currencyTableBody">
+                                <!-- Currency data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Conversions Modal -->
+    <div class="modal fade" id="conversionsModal" tabindex="-1" aria-labelledby="conversionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="conversionsModalLabel">Conversion History</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="currency-table" id="conversionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Amount</th>
+                                    <th>Converted Amount</th>
+                                    <th>Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="conversionsTableBody">
+                                <!-- Conversion data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Currency Modal Functionality
+            const totalCurrenciesCard = document.getElementById('totalCurrenciesCard');
+            const currencyModal = new bootstrap.Modal(document.getElementById('currencyModal'));
+            
+            totalCurrenciesCard.addEventListener('click', function() {
+                // Fetch currencies data
+                fetch('/get_currencies')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const tableBody = document.getElementById('currencyTableBody');
+                            tableBody.innerHTML = '';
+                            
+                            data.currencies.forEach(currency => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${currency.currency_code}</td>
+                                    <td>${currency.currency_name}</td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+                            
+                            currencyModal.show();
+                        } else {
+                            alert('Failed to load currencies');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching currencies:', error);
+                        alert('An error occurred while fetching currencies');
+                    });
+            });
+            
+            // Conversions Modal Functionality and Scroll
+            const conversionsCard = document.getElementById('conversionsCard');
+            const conversionsModal = new bootstrap.Modal(document.getElementById('conversionsModal'));
+            const trendAnalysisSection = document.getElementById('trendAnalysisSection');
+            
+            conversionsCard.addEventListener('click', function() {
+                // Scroll to the trend analysis section
+                trendAnalysisSection.scrollIntoView({ 
+                    behavior: 'smooth',  // Add smooth scrolling
+                    block: 'start'       // Align the top of the element with the top of the viewport
+                });
+            });
+            
+            // Exchange Rate Chart setup
+            const exchangeRateCtx = document.getElementById('exchangeRateChart').getContext('2d');
+            
+            fetch('/get_trend_data')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const chart = new Chart(exchangeRateCtx, {
+                            type: 'line',
+                            data: {
+                                labels: data.labels,
+                                datasets: data.datasets
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                    },
+                                    tooltip: {
+                                        mode: 'index',
+                                        intersect: false,
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Exchange Rate Trends (USD Base)'
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: false,
+                                        title: {
+                                            display: true,
+                                            text: 'Exchange Rate'
+                                        }
+                                    },
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Date'
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        document.getElementById('exchangeRateChart').innerHTML = 
+                            '<div class="text-center p-5 text-muted"><i class="fas fa-chart-line fa-3x mb-3"></i><p>Error loading trend data. Please try again later.</p></div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching trend data:', error);
+                    document.getElementById('exchangeRateChart').innerHTML = 
+                        '<div class="text-center p-5 text-muted"><i class="fas fa-chart-line fa-3x mb-3"></i><p>Error loading trend data. Please try again later.</p></div>';
+                });
+        });
+    </script>
+</body>
+</html>
