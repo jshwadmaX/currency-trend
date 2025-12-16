@@ -97,6 +97,12 @@ def dashboard():
         "monthly_trend": "+2.45%",
     }
     return render_template("dashboard.html", account=account, stats=stats)
+    
+@app.route("/profile")
+@login_required
+def profile():
+    account = users.get(session["username"])
+    return render_template("profile.html", account=account)
 
 @app.route("/exchange_rates")
 @login_required
