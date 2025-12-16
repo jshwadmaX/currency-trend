@@ -127,6 +127,31 @@ def currency_converter():
 def get_currencies():
     return jsonify({"success": True, "currencies": currencies})
 
+@app.route("/edit_profile", methods=["GET", "POST"])
+@login_required
+def edit_profile():
+    account = users.get(session["username"])
+
+    if request.method == "POST":
+        new_username = request.form.get("username")
+        new_email = request.form.get("email")
+
+        # update in-memory store
+        users.pop(session["username"])
+        users[new_username] = {
+            "id": account["id"],
+            "username": new_username,
+            "email": new_email,
+            "password_hash": account["password_hash"]
+        }
+
+        session["username"] = new_username
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for("profile"))
+
+    return render_template("edit_profile.html", account=account)
+
+
 @app.route("/convert", methods=["POST"])
 @login_required
 def convert():
@@ -177,3 +202,4 @@ def get_conversions():
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
+
