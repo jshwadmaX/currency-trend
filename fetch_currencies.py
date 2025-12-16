@@ -1,13 +1,4 @@
-import mysql.connector
 import requests
-
-# Database connection details
-db_config = {
-    "host": "localhost",  # Change if your MySQL is hosted elsewhere
-    "user": "root",  # Change to your MySQL username
-    "password": "root123",  # Change to your MySQL password
-    "database": "currency_trend_management",  # Ensure this database exists
-}
 
 # API Key & URL
 api_key = "0747d93d32f8e90f1d01f1d6"
@@ -24,34 +15,10 @@ try:
         print("Error: 'supported_codes' not found in API response.")
     else:
         currencies = data["supported_codes"]
-
-        # Connect to MySQL
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor()
-
-        # Create currencies table if not exists
-        cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS currencies (
-                currency_code VARCHAR(3) PRIMARY KEY,
-                currency_name VARCHAR(100) NOT NULL
-            )
-        """
-        )
-        conn.commit()
-
-        # Insert data into table
-        insert_query = "INSERT INTO currencies (currency_code, currency_name) VALUES (%s, %s) ON DUPLICATE KEY UPDATE currency_name=VALUES(currency_name)"
-        cursor.executemany(insert_query, currencies)
-        conn.commit()
-
-        print(f"Inserted {cursor.rowcount} currencies into the database.")
+        # currencies is a list of [code, name] pairs
+        print(f"Fetched {len(currencies)} currencies from API:")
+        for code, name in currencies:
+            print(f"{code}: {name}")
 
 except requests.exceptions.RequestException as e:
     print(f"API Error: {e}")
-except mysql.connector.Error as e:
-    print(f"MySQL Error: {e}")
-finally:
-    if "conn" in locals() and conn.is_connected():
-        cursor.close()
-        conn.close()
