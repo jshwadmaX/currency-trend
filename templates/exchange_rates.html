@@ -18,68 +18,27 @@
             --light-gray: #f3f3f3;
         }
 
-        body {
-            background-color: #f8f9fa;
-        }
-        .navbar-custom {
-            background-color: var(--primary-violet) !important;
-        }
-        .navbar-brand {
-            font-weight: bold;
-        }
-        .card {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            border-color: var(--primary-violet);
-        }
-        .card-header {
-            background-color: var(--primary-violet) !important;
-        }
-        .btn-primary {
-            background-color: var(--primary-violet);
-            border-color: var(--primary-violet);
-        }
-        .btn-primary:hover {
-            background-color: var(--darker-violet);
-            border-color: var(--darker-violet);
-        }
-        .btn-secondary {
-            background-color: var(--secondary-violet);
-            border-color: var(--secondary-violet);
-        }
-        .btn-secondary:hover {
-            background-color: var(--light-violet);
-            border-color: var(--light-violet);
-        }
-        .table th {
-            background-color: var(--primary-violet);
-            color: white;
-        }
-        .alert-info {
-            background-color:rgb(175, 169, 228);
-            border-color: #CE93D8;
-            color: var(--darker-violet);
-        }
-        footer {
-            margin-top: 50px;
-            padding: 20px 0;
-            background-color: var(--primary-violet);
-            color: white;
-        }
-        .nav-link:hover {
-            background-color: var(--secondary-violet);
-            border-radius: 4px;
-        }
-        .navbar {
-            background-color: var(--primary-violet) !important;
-        }
+        body { background-color: #f8f9fa; }
+        .navbar-custom { background-color: var(--primary-violet) !important; }
+        .navbar-brand { font-weight: bold; }
+        .card { box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 20px; border-color: var(--primary-violet); }
+        .card-header { background-color: var(--primary-violet) !important; }
+        .btn-primary { background-color: var(--primary-violet); border-color: var(--primary-violet); }
+        .btn-primary:hover { background-color: var(--darker-violet); border-color: var(--darker-violet); }
+        .btn-secondary { background-color: var(--secondary-violet); border-color: var(--secondary-violet); }
+        .btn-secondary:hover { background-color: var(--light-violet); border-color: var(--light-violet); }
+        .table th { background-color: var(--primary-violet); color: white; }
+        .alert-info { background-color:rgb(175, 169, 228); border-color: #CE93D8; color: var(--darker-violet); }
+        footer { margin-top: 50px; padding: 20px 0; background-color: var(--primary-violet); color: white; }
+        .nav-link:hover { background-color: var(--secondary-violet); border-radius: 4px; }
+        .navbar { background-color: var(--primary-violet) !important; }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+            <a class="navbar-brand" href="#">
                 <i class="fas fa-money-bill-wave"></i> Currency Exchange
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -87,33 +46,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('dashboard') }}">
-                            <i class="fas fa-tachometer-alt"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url_for('exchange_rates') }}">
-                            <i class="fas fa-chart-line"></i> Exchange Rates
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('currency_converter') }}">
-                            <i class="fas fa-exchange-alt"></i> Currency Converter
-                        </a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Exchange Rates</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Currency Converter</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('profile') }}">
-                            <i class="fas fa-user"></i> {{ session.username }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user"></i> JohnDoe</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -124,14 +63,13 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header text-white">
                         <h2><i class="fas fa-chart-line"></i> Current Exchange Rates</h2>
                     </div>
                     <div class="card-body">
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle"></i> Exchange rates are updated daily. Base currency is USD.
                         </div>
-                        
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -142,26 +80,15 @@
                                         <th>Last Updated</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {% for rate in rates %}
-                                    <tr>
-                                        <td>{{ rate.base_currency }}</td>
-                                        <td>{{ rate.target_currency }}</td>
-                                        <td>{{ rate.exchange_rate }}</td>
-                                        <td>{{ rate.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
-                                    </tr>
-                                    {% endfor %}
+                                <tbody id="rates-table-body">
+                                    <!-- Rows will be inserted by JS -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ url_for('currency_converter') }}" class="btn btn-primary">
-                            <i class="fas fa-exchange-alt"></i> Go to Currency Converter
-                        </a>
-                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
-                            <i class="fas fa-tachometer-alt"></i> Back to Dashboard
-                        </a>
+                        <a href="#" class="btn btn-primary"><i class="fas fa-exchange-alt"></i> Go to Currency Converter</a>
+                        <a href="#" class="btn btn-secondary"><i class="fas fa-tachometer-alt"></i> Back to Dashboard</a>
                     </div>
                 </div>
             </div>
@@ -175,7 +102,29 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS with Popper -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS to simulate dynamic exchange rates -->
+    <script>
+        const rates = [
+            { base_currency: 'USD', target_currency: 'EUR', exchange_rate: 0.92, timestamp: new Date() },
+            { base_currency: 'USD', target_currency: 'JPY', exchange_rate: 149.5, timestamp: new Date() },
+            { base_currency: 'USD', target_currency: 'GBP', exchange_rate: 0.81, timestamp: new Date() },
+            { base_currency: 'USD', target_currency: 'INR', exchange_rate: 83.1, timestamp: new Date() }
+        ];
+
+        const tbody = document.getElementById('rates-table-body');
+        rates.forEach(rate => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${rate.base_currency}</td>
+                <td>${rate.target_currency}</td>
+                <td>${rate.exchange_rate}</td>
+                <td>${rate.timestamp.toLocaleString()}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    </script>
 </body>
 </html>
