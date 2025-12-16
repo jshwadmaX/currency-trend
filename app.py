@@ -132,12 +132,27 @@ def get_currencies():
 def edit_profile():
     account = users.get(session["username"])
 
-    if request.method == "POST":
-        new_username = request.form.get("username")
-        new_email = request.form.get("email")
+    if not account:
+        flash("User not found", "danger")
+        return redirect(url_for("logout"))
 
-        # update in-memory store
-        users.pop(session["username"])
+    if request.method == "POST":
+        new_username = request.form.get("username").strip()
+        new_email = request.form.get("email").strip()
+
+        # basic validation
+        if not new_username or not new_email:
+            flash("All fields are required", "danger")
+            return redirect(url_for("edit_profile"))
+
+        # if username changed and already exists
+        if new_username != session["username"] and new_username in users:
+            flash("Username already taken", "danger")
+            return redirect(url_for("edit_profile"))
+
+        # update in-memory store safely
+        old_username = session["username"]
+
         users[new_username] = {
             "id": account["id"],
             "username": new_username,
@@ -145,7 +160,10 @@ def edit_profile():
             "password_hash": account["password_hash"]
         }
 
-        session["username"] = new_username
+        if new_username != old_username:
+            del users[old_username]
+            session["username"] = new_username
+
         flash("Profile updated successfully!", "success")
         return redirect(url_for("profile"))
 
@@ -202,4 +220,5 @@ def get_conversions():
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
+
 
