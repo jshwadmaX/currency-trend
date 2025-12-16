@@ -22,11 +22,12 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 # MySQL configuration
-app.config['MYSQL_HOST'] = os.environ.get('MYSQL_HOST')
-app.config['MYSQL_USER'] = os.environ.get('MYSQL_USER')
-app.config['MYSQL_PASSWORD'] = os.environ.get('MYSQL_PASSWORD')
-app.config['MYSQL_DB'] = os.environ.get('MYSQL_DB')
-app.config['MYSQL_PORT'] = int(os.environ.get('MYSQL_PORT', 3306))
+app.config['MYSQL_HOST'] = os.getenv('MYSQLHOST')
+app.config['MYSQL_USER'] = os.getenv('MYSQLUSER')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQLPASSWORD')
+app.config['MYSQL_DB'] = os.getenv('MYSQLDATABASE')
+app.config['MYSQL_PORT'] = int(os.getenv('MYSQLPORT', 3306))
+
 
 # Initialize MySQL
 mysql = MySQL(app)
@@ -579,4 +580,5 @@ def edit_profile():
 # Run the app
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
+
 
