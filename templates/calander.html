@@ -20,14 +20,12 @@
             --fc-button-hover-border-color: #4f46e5;
             --fc-today-bg-color: rgba(99, 102, 241, 0.1);
         }
-
         body {
             margin: 0;
             padding: 20px;
             font-family: Arial, sans-serif;
             background-color: #f8fafc;
         }
-
         .calendar-container {
             background-color: #ffffff;
             border-radius: 16px;
@@ -35,68 +33,27 @@
             padding: 1.5rem;
             margin-top: 1.5rem;
         }
-
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
-
         .calendar-controls select {
             padding: 0.5rem;
             border-radius: 8px;
             border: 1px solid #e2e8f0;
             margin-left: 10px;
         }
-
-        .fc {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .fc .fc-toolbar.fc-header-toolbar {
-            margin-bottom: 1.5em;
-            background-color: #fff;
-            padding: 1rem;
-            border-radius: 8px;
-        }
-
-        .fc .fc-button {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-        }
-
-        .fc .fc-daygrid-day.fc-day-today {
-            background-color: rgba(99, 102, 241, 0.1);
-        }
-
-        .fc .fc-daygrid-day-number {
-            padding: 8px;
-            color: #1e293b;
-        }
-
-        .fc .fc-col-header-cell {
-            padding: 10px 0;
-            background-color: #f8fafc;
-        }
-
-        .fc .fc-event {
-            border-radius: 4px;
-            padding: 2px 4px;
-            font-size: 0.875rem;
-            border: none;
-        }
-
-        .modal-content {
-            border-radius: 16px;
-        }
-
-        .modal-header {
-            background-color: #f8fafc;
-            border-radius: 16px 16px 0 0;
-        }
+        .fc { max-width: 1200px; margin: 0 auto; }
+        .fc .fc-toolbar.fc-header-toolbar { margin-bottom: 1.5em; background-color: #fff; padding: 1rem; border-radius: 8px; }
+        .fc .fc-button { padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; }
+        .fc .fc-daygrid-day.fc-day-today { background-color: rgba(99, 102, 241, 0.1); }
+        .fc .fc-daygrid-day-number { padding: 8px; color: #1e293b; }
+        .fc .fc-col-header-cell { padding: 10px 0; background-color: #f8fafc; }
+        .fc .fc-event { border-radius: 4px; padding: 2px 4px; font-size: 0.875rem; border: none; }
+        .modal-content { border-radius: 16px; }
+        .modal-header { background-color: #f8fafc; border-radius: 16px 16px 0 0; }
     </style>
 </head>
 <body>
@@ -171,7 +128,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const calendarEl = document.getElementById('calendar');
             const eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
-            let selectedDate = null;
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -184,15 +140,8 @@
                 selectable: true,
                 selectMirror: true,
                 dayMaxEvents: true,
-                events: [
-                    {
-                        title: 'Sample Event',
-                        start: '2025-04-10',
-                        color: '#6366f1'
-                    }
-                ],
+                events: [],
                 select: function(info) {
-                    selectedDate = info;
                     document.getElementById('eventStart').value = info.startStr;
                     document.getElementById('eventEnd').value = info.endStr;
                     eventModal.show();
@@ -206,18 +155,17 @@
 
             calendar.render();
 
-            // Handle month/year selection
+            // Month/year controls
             document.getElementById('monthSelect').addEventListener('change', function(e) {
                 const date = calendar.getDate();
                 calendar.gotoDate(new Date(date.getFullYear(), e.target.value, 1));
             });
-
             document.getElementById('yearSelect').addEventListener('change', function(e) {
                 const date = calendar.getDate();
                 calendar.gotoDate(new Date(e.target.value, date.getMonth(), 1));
             });
 
-            // Handle event saving
+            // Save events locally
             document.getElementById('saveEvent').addEventListener('click', function() {
                 const title = document.getElementById('eventTitle').value;
                 const start = document.getElementById('eventStart').value;
@@ -232,12 +180,11 @@
                         color: '#6366f1'
                     });
                 }
-
                 document.getElementById('eventForm').reset();
                 eventModal.hide();
             });
 
-            // Set initial month/year in selects
+            // Set initial month/year
             const currentDate = calendar.getDate();
             document.getElementById('monthSelect').value = currentDate.getMonth();
             document.getElementById('yearSelect').value = currentDate.getFullYear();
