@@ -355,18 +355,18 @@
         setInterval(createCurrencySymbol, 2000);
         
         // Add coin rain effect on form interaction
-        function createCoin(x, y) {
-            const coin = document.createElement('div');
-            coin.className = 'coin';
-            coin.textContent = '💰';
-            coin.style.left = x + 'px';
-            coin.style.top = y + 'px';
-            document.body.appendChild(coin);
+       // function createCoin(x, y) {
+           // const coin = document.createElement('div');
+          //  coin.className = 'coin';
+          //  coin.textContent = '💰';
+           // coin.style.left = x + 'px';
+          //  coin.style.top = y + 'px';
+          //  document.body.appendChild(coin);
             
-            setTimeout(() => {
-                coin.remove();
-            }, 2000);
-        }
+         //   setTimeout(() => {
+         //       coin.remove();
+         //   }, 2000);
+      //  }
         
         // Trigger coins on input focus
         document.querySelectorAll('.form-control').forEach(input => {
@@ -392,3 +392,4 @@
     </script>
 </body>
 </html>
+
