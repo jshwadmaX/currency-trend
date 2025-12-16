@@ -1,51 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Edit Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
-<body>
-    <div class="container mt-5">
-        <h2>Edit Profile</h2>
-        <form id="edit-profile-form">
-            <div class="mb-3">
-                <label class="form-label">Username</label>
-                <input type="text" id="username" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" id="email" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-success">Update</button>
-            <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
-        </form>
+<body class="bg-light">
+
+<div class="container mt-5" style="max-width: 500px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="mb-4 text-center">Edit Profile</h4>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="username"
+                        value="{{ account.username }}"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input
+                        type="email"
+                        class="form-control"
+                        name="email"
+                        value="{{ account.email }}"
+                        required
+                    >
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('profile') }}" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
-    <script>
-        // Demo account info
-        const account = {
-            username: "JohnDoe",
-            email: "john@example.com"
-        };
-
-        // Pre-fill form
-        document.getElementById('username').value = account.username;
-        document.getElementById('email').value = account.email;
-
-        // Handle form submission
-        document.getElementById('edit-profile-form').addEventListener('submit', function(e){
-            e.preventDefault();
-            account.username = document.getElementById('username').value;
-            account.email = document.getElementById('email').value;
-            alert('Profile updated!\nUsername: ' + account.username + '\nEmail: ' + account.email);
-        });
-
-        // Cancel button
-        document.getElementById('cancel-btn').addEventListener('click', function(){
-            alert('Cancelled. Returning to dashboard.');
-            // Replace with actual navigation if needed, e.g., window.location.href = "dashboard.html";
-        });
-    </script>
 </body>
 </html>
