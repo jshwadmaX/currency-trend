@@ -8,17 +8,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --lavender-primary: #6440d1ff;
-            --lavender-light: #7a3ee3ff;
+            --lavender-primary: #5553d4ff;
+            --lavender-light: #6f55cbff;
             --lavender-dark: #7a5fb8;
-            --lavender-accent: #4718b4ff;
-            --lavender-bg: #040404ff;
+            --lavender-accent: #5d40d0ff;
+            --lavender-bg: #47356bff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body { 
-            background: linear-gradient(135deg, #453bd3ff 0%, #e6d9ff 100%);
+            background: linear-gradient(135deg, #433496ff 0%, #6f61c2ff 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
@@ -44,7 +44,7 @@
 
         /* Navbar */
         .navbar-custom { 
-            background: linear-gradient(135deg, #541cc5ff 0%, #4820a5ff 100%) !important;
+            background: linear-gradient(135deg, #3934a1ff 0%, #3f32b4ff 100%) !important;
             box-shadow: 0 4px 20px rgba(155, 127, 212, 0.3);
             padding: 1rem 0;
         }
@@ -114,7 +114,7 @@
             border: none;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(155, 127, 212, 0.3);
+            box-shadow: 0 10px 40px rgba(77, 52, 127, 0.3);
             margin-bottom: 30px;
             animation: slideUp 0.6s ease-out;
             background: white;
@@ -126,7 +126,7 @@
         }
 
         .card-header { 
-            background: linear-gradient(135deg, #9b7fd4 0%, #c4b0e6 100%) !important;
+            background: linear-gradient(135deg, #5151bdff 0%, #49479cff 100%) !important;
             padding: 25px;
             border: none;
         }
@@ -144,7 +144,7 @@
 
         /* Alert Box */
         .alert-info { 
-            background: linear-gradient(135deg, #e6d9ff 0%, #f5f0ff 100%);
+            background: linear-gradient(135deg, #36268dff 0%, #202087ff 100%);
             border: 2px solid #c4b0e6;
             color: #7a5fb8;
             border-radius: 15px;
@@ -190,7 +190,7 @@
         }
 
         .table tbody tr:hover {
-            background: linear-gradient(135deg, #f5f0ff 0%, #e6d9ff 100%);
+            background: linear-gradient(135deg, #5a46daff 0%, #7470c4ff 100%);
             transform: scale(1.02);
             box-shadow: 0 4px 15px rgba(155, 127, 212, 0.2);
         }
@@ -205,7 +205,7 @@
             display: inline-block;
             width: 30px;
             height: 30px;
-            background: linear-gradient(135deg, #9b7fd4 0%, #c4b0e6 100%);
+            background: linear-gradient(135deg, #391a78ff 0%, #3e2fb5ff 100%);
             border-radius: 50%;
             text-align: center;
             line-height: 30px;
@@ -223,7 +223,7 @@
         .rate-badge {
             display: inline-block;
             padding: 8px 15px;
-            background: linear-gradient(135deg, #9b7fd4 0%, #c4b0e6 100%);
+            background: linear-gradient(135deg, #2f246dff 0%, #362689ff 100%);
             color: white;
             border-radius: 20px;
             font-weight: bold;
@@ -358,9 +358,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Exchange Rates</a></li>
-                    <li class="nav-item"><a class="nav-link" href="currency_converter.html">Currency Converter</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('exchange_rates') }}">Exchange Rates</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('currency_converter') }}">Currency Converter</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -404,10 +404,10 @@
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="currency-converter.html" class="btn btn-primary m-2">
+                        <a href="{{ url_for('currency_converter') }}" class="btn btn-primary m-2">
                             <i class="fas fa-exchange-alt"></i> Go to Currency Converter
                         </a>
-                        <a href="dashboard.html" class="btn btn-secondary m-2">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary m-2">
                             <i class="fas fa-tachometer-alt"></i> Back to Dashboard
                         </a>
                     </div>
@@ -447,19 +447,12 @@
 
         createParticles();
 
-        // Get username from localStorage or use default
-        const username = localStorage.getItem('username') || 'Guest User';
+        // Get username from Flask template
+        const username = "{{ account.username if account else 'Guest User' }}";
         document.getElementById('username').textContent = username;
 
-        // Exchange rates data with animation
-        const rates = [
-            { base_currency: 'USD', target_currency: 'EUR', exchange_rate: 0.92, timestamp: new Date() },
-            { base_currency: 'USD', target_currency: 'JPY', exchange_rate: 149.5, timestamp: new Date() },
-            { base_currency: 'USD', target_currency: 'GBP', exchange_rate: 0.81, timestamp: new Date() },
-            { base_currency: 'USD', target_currency: 'INR', exchange_rate: 83.1, timestamp: new Date() },
-            { base_currency: 'USD', target_currency: 'AUD', exchange_rate: 1.52, timestamp: new Date() },
-            { base_currency: 'USD', target_currency: 'CAD', exchange_rate: 1.35, timestamp: new Date() }
-        ];
+        // Exchange rates data from Flask backend
+        const rates = {{ rates | tojson | safe }};
 
         function renderRates() {
             const tbody = document.getElementById('rates-table-body');
