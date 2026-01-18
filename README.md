@@ -1,9 +1,5 @@
 <img width="1536" height="1024" alt="ChatGPT Image Jan 18, 2026, 06_47_48 PM" src="https://github.com/user-attachments/assets/728ffeeb-2a36-48c7-a56e-777b5f20d27c" />
 Currency Trend Management System
-🏷 Tags
-
-flask python fintech currency-exchange rest-api web-application
-full-stack real-time-data cloud-deployment bootstrap
 
 A Flask-based web application for tracking, analyzing, and converting real-time currency exchange trends.
 It features secure authentication, live exchange rate analytics, and an intuitive user dashboard.
