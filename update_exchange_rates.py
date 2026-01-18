@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 # API details
-API_KEY = "0747d93d32f8e90f1d01f1d6"
+API_KEY = ""
 BASE_CURRENCY = "USD"  # Change base currency if needed
 API_URL = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/{BASE_CURRENCY}"
 
@@ -47,3 +47,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
