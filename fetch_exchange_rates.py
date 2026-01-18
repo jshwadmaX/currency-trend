@@ -2,7 +2,7 @@ import requests
 from datetime import datetime
 
 # API Key & URL
-API_KEY = "0747d93d32f8e90f1d01f1d6"
+API_KEY = ""
 API_URL = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD"
 
 # Fetch data
@@ -26,3 +26,4 @@ try:
 
 except requests.exceptions.RequestException as e:
     print(f"API Error: {e}")
+
