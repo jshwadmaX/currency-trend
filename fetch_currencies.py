@@ -1,7 +1,7 @@
 import requests
 
 # API Key & URL
-api_key = "0747d93d32f8e90f1d01f1d6"
+api_key = ""
 api_url = f"https://v6.exchangerate-api.com/v6/{api_key}/codes"
 
 try:
@@ -22,3 +22,4 @@ try:
 
 except requests.exceptions.RequestException as e:
     print(f"API Error: {e}")
+
