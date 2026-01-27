@@ -103,6 +103,9 @@ Platform: Render
 Environment: Production-grade cloud hosting
 
 
+<img width="576" height="1654" alt="_- visual selection (13)" src="https://github.com/user-attachments/assets/b6c466e8-eeeb-414c-a414-284382e1f169" />
+
+
 ⚙️ Installation & Local Setup
 1️⃣ Clone the Repository
 git clone https://github.com/jshwadmaX/currency-trend.git
