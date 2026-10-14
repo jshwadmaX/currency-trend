@@ -1,171 +1,177 @@
-<img width="1536" height="1024" alt="ChatGPT Image Jan 18, 2026, 06_47_48 PM" src="https://github.com/user-attachments/assets/728ffeeb-2a36-48c7-a56e-777b5f20d27c" />
-Currency Trend Management System
+# Cashanova
 
-A Flask-based web application for tracking, analyzing, and converting real-time currency exchange trends.
-It features secure authentication, live exchange rate analytics, and an intuitive user dashboard.
+Cashanova is a currency trend management web app for looking up exchange rates, converting amounts between currencies, and reviewing recent conversions. It uses a Flask and MySQL backend with server-rendered Jinja templates.
 
-🔗 Live Demo: https://currency-trend.onrender.com
+> **Data freshness:** Rates come from ExchangeRate-API's `latest/USD` endpoint. The app checks for an update when a rates-related page is requested and caches the provider response for up to 20 hours. The provider's free plan updates about once per day, so these are not live, tick-by-tick market prices.
 
-🧠 Why CurrencyTrend?
+## Screenshots
 
-Most currency apps only show numbers.
-CurrencyTrend focuses on insight.
+Add screenshots in the spaces below. Suggested location: `docs/images/`.
 
-Track how currencies change over time
+### Dashboard
 
-Analyze trends, not just rates
-
-Maintain conversion history
-
-Get a secure, personalized experience
-
-Built with scalability, clarity, and real-world finance workflows in mind.
-
-✨ Key Capabilities
-
-🔐 Secure User Authentication
-
-Signup, login, logout
-
-Session-based access control
-
-📊 Trend-Aware Dashboard
-
-Live exchange rates
-
-Currency statistics & movement patterns
-
-💱 Real-Time Currency Tracking
-
-Auto-updated exchange rates
-
-Multiple currency pairs supported
-
-🔁 Currency Conversion Engine
-
-Convert currencies instantly
-
-Store and review past conversions
-
-👤 User Profile Management
-
-View and edit personal details
-
-Personalized session data
-
-🌐 RESTful API Layer
-
-Modular backend architecture
-
-Clean separation of logic
-
-📱 Responsive Web Interface
-
-Mobile & desktop friendly UI
-
-Built using Bootstrap
-
-🛠 Tech Stack
-🔙 Backend
-
-Language: Python
-
-Framework: Flask
-
-Architecture: RESTful APIs
-
-Security: Session-based authentication, hashed credentials
-
-🎨 Frontend
-
-Markup: HTML5
-
-Styling: CSS3, Bootstrap
-
-Interactivity: JavaScript
-
-🗄 Data Layer
-
-Storage Type: In-memory data storage
-
-Reasoning:
-
-Faster access
-
-Simplified deployment
-
-Ideal for demos & cloud hosting
-
-☁️ Deployment
-
-Platform: Render
-
-Environment: Production-grade cloud hosting
+<img width="1920" height="912" alt="Screenshot (1503)" src="https://github.com/user-attachments/assets/a4397597-8511-4bb6-a72c-ba7764539359" />
 
 
-<img width="576" height="1654" alt="_- visual selection (13)" src="https://github.com/user-attachments/assets/b6c466e8-eeeb-414c-a414-284382e1f169" />
+### Exchange rates
+
+<img width="1920" height="910" alt="Screenshot (1504)" src="https://github.com/user-attachments/assets/31808877-6999-431b-8213-1b36328dad63" />
 
 
-⚙️ Installation & Local Setup
-1️⃣ Clone the Repository
-git clone https://github.com/jshwadmaX/currency-trend.git
-cd currency-trend
+### Currency converter
 
-2️⃣ Create a Virtual Environment
-python -m venv venv
+<img width="1920" height="907" alt="Screenshot (1505)" src="https://github.com/user-attachments/assets/4dcc427d-e034-4cb7-9d63-947059ee210b" />
 
 
-Activate it:
+## Features
 
-Linux / macOS
+- User registration, login, logout, and profile pages.
+- Dashboard summaries for available currencies, the signed-in user's monthly conversions, selected USD rates, and recent conversion history.
+- Exchange-rate table with currency search and provider update timestamp.
+- Currency converter that supports direct, inverse, and USD cross-rate calculations.
+- Conversion history associated with the signed-in user.
+- Daily rate retrieval with a provider timestamp and a 20-hour cache window.
 
-source venv/bin/activate
+<img width="1376" height="768" alt="Gemini_Generated_Image_9c3yoy9c3yoy9c3y" src="https://github.com/user-attachments/assets/a8788b85-aaaa-4358-a348-d9e99d8ca07e" />
 
 
-Windows
+## Technology
 
-venv\Scripts\activate
+- Python and Flask
+- MySQL with Flask-MySQLdb
+- Jinja, Bootstrap, and Font Awesome
+- ExchangeRate-API via Python Requests
 
-3️⃣ Install Dependencies
+## Project layout
+
+```text
+app.py                       Main Flask application and routes
+templates/                   Flask/Jinja pages
+currencies.sql               Currency seed data
+fetch_currencies.py          Fetch supported currency codes and names
+fetch_exchange_rates.py      One-shot exchange-rate fetcher
+update_exchange_rates.py     One-shot updater for the MySQL rate table
+trend_analysis.py            Copies saved rates into the trend table
+user_alerts.py               Currency alert helper
+requirements.txt             Python dependencies
+backend/app.py               Separate minimal Flask prototype
+frontend/                    Separate Vite/React frontend project
+```
+
+Run the root `app.py` for the application documented here. `backend/app.py` and `frontend/` are separate project paths and are not wired into this Flask/Jinja application.
+
+## Requirements
+
+- Python 3.10 or newer
+- MySQL Server
+- An ExchangeRate-API account and API key
+
+## Setup
+
+### 1. Create a virtual environment
+
+From the project root in Command Prompt:
+
+```cmd
+py -m venv .venv
+.venv\Scripts\activate
+python -m pip install --upgrade pip
 pip install -r requirements.txt
+```
 
-4️⃣ Run the Application
+If using the repository's existing `venv`, activate it instead:
+
+```cmd
+venv\Scripts\activate
+```
+
+### 2. Create the MySQL database and tables
+
+The app currently connects to `localhost` and the `currency_trend_management` database. Update the MySQL settings near the top of `app.py` to match your local server before running the app.
+
+Run this schema in MySQL. The `conversion_history` table is also created automatically by the app if it is missing.
+
+```sql
+CREATE DATABASE IF NOT EXISTS currency_trend_management;
+USE currency_trend_management;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(80) NOT NULL UNIQUE,
+    email VARCHAR(120) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS currencies (
+    currency_code CHAR(3) NOT NULL PRIMARY KEY,
+    currency_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS exchange_rates (
+    base_currency CHAR(3) NOT NULL,
+    target_currency CHAR(3) NOT NULL,
+    exchange_rate DECIMAL(24, 12) NOT NULL,
+    timestamp DATETIME NOT NULL,
+    PRIMARY KEY (base_currency, target_currency)
+);
+```
+
+The included [`currencies.sql`](currencies.sql) file can seed currency names after the `currencies` table exists. Alternatively, `fetch_currencies.py` retrieves supported codes from the API.
+
+<img width="1376" height="768" alt="Gemini_Generated_Image_t9pjtqt9pjtqt9pj" src="https://github.com/user-attachments/assets/737f41f3-a2ec-4a7c-917c-8fb295cc02da" />
+
+
+
+### 3. Set the API key
+
+Set `EXCHANGE_RATE_API_KEY` in the same terminal session used to start Flask. Use a newly rotated key; never commit it to source control.
+
+**Command Prompt:**
+
+```cmd
+set "EXCHANGE_RATE_API_KEY=YOUR_API_KEY"
+```
+
+**PowerShell:**
+
+```powershell
+$env:EXCHANGE_RATE_API_KEY = "YOUR_API_KEY"
+```
+
+### 4. Start the application
+
+In the same terminal where the environment variable is set:
+
+```cmd
 python app.py
+```
 
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000), register an account, and sign in.
 
-🌐 Open in browser:
+## Rate updates
 
-http://127.0.0.1:3000
+The dashboard, exchange-rates page, and converter check the saved USD rates when requested. If the latest saved provider timestamp is older than 20 hours, the app requests the provider's latest published rates and saves them. Reloading the page does not make the provider publish newer data.
 
-🔐 Authentication & Security
+The standalone `update_exchange_rates.py` and `fetch_exchange_rates.py` scripts also perform a single fetch when run; they are not background schedulers. The included free API data generally refreshes once per day.
 
-Passwords hashed using SHA-256
+## Main routes
 
-Session-based authentication with Flask
+| Route | Purpose |
+| --- | --- |
+| `/register` | Create an account |
+| `/login` | Sign in |
+| `/dashboard` | View account activity and selected rates |
+| `/exchange_rates` | Browse and search saved rates |
+| `/currency_converter` | Open the converter |
+| `/convert` | Convert an amount (POST) |
+| `/get_currencies` | Return available currencies (JSON) |
+| `/get_conversions` | Return the signed-in user's history (JSON) |
+| `/profile` | View the account profile |
 
-Protected routes enforced via decorators
+## Notes for development and deployment
 
-No hardcoded API keys (environment-safe design)
-
-🧪 Demo Credentials
-Username: demo
-Password: demo123
-
-
-(You can also create a new account via Signup)
-
-🚀 Future Roadmap
-
-🔄 Persistent database integration (PostgreSQL / MySQL)
-
-📈 Live Forex APIs (OpenExchangeRates / AlphaVantage)
-
-🔔 User-defined alerts for currency fluctuations
-
-📊 Interactive charts & visual analytics
-
-🔐 OAuth authentication (Google / GitHub)
-
-📱 Progressive Web App (PWA) support
-
-⭐ If you like this project, consider giving it a star — it really helps!
+- The Flask development server runs with debug mode enabled. Do not expose it to the public internet.
+- Configure database credentials and Flask's session secret securely before deployment; the current app contains development-oriented configuration.
+- The API key previously shared during development should be revoked and replaced.
+- Exchange-rate data is suitable for indicative conversion and learning purposes, not financial execution or guaranteed live pricing.
+- Some legacy analysis helpers expect additional trend and alert tables that are not part of the core dashboard setup above.
