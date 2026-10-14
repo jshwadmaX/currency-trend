@@ -6,7 +6,7 @@ Cashanova is a currency trend management web app for looking up exchange rates, 
 
 ## Screenshots
 
-Add screenshots in the spaces below. Suggested location: `docs/images/`.
+
 
 ### Dashboard
 
